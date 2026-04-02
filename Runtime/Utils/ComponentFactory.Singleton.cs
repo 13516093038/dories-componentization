@@ -15,6 +15,12 @@ namespace Dories.Componentization.Runtime.Utils
 
         public static Component RegisterSingletonComponent(Type type, ISingleton singleton = null)
         {
+            if (m_SingletonComponents.ContainsKey(type))
+            {
+                Debug.LogError($"Singleton component {type} already registered");
+                return null;
+            }
+
             if (!typeof(ISingleton).IsAssignableFrom(type))
             {
                 Debug.LogError($"Singleton component {type} not registered");
@@ -39,6 +45,7 @@ namespace Dories.Componentization.Runtime.Utils
                 if (typeof(ISingleton).IsAssignableFrom(type))
                 {
                     singleton = Acquire(type) as ISingleton;
+                    m_SingletonComponents.Add(type, singleton);
                 }
 
             }
