@@ -1,4 +1,5 @@
 using System;
+using Dories.Componentization.Runtime.Utils;
 using UnityEngine;
 
 namespace Dories.Componentization.Runtime
@@ -8,18 +9,13 @@ namespace Dories.Componentization.Runtime
         //Entity实体
         private Entity m_Entity;
         
-        public virtual Entity Entity => m_Entity;
+        private Entity Entity => m_Entity ??= ComponentFactory.Acquire<Entity>();
 
-        public virtual void SetEntity(Entity entity)
+        protected virtual void OnDestroy()
         {
-            m_Entity = entity;
-        }
-
-        private void InternalCheck()
-        {
-            if (m_Entity == null)
+            if (m_Entity != null)
             {
-                throw new Exception("Entity is null");
+                ComponentFactory.Release(m_Entity);
             }
         }
         
@@ -30,8 +26,7 @@ namespace Dories.Componentization.Runtime
         /// <returns></returns>
         public T AddComponent<T>(object userData = null) where T : Component
         {
-            InternalCheck();
-            return m_Entity.AddComponent<T>(userData);
+            return Entity.AddComponent<T>(userData);
         }
 
         /// <summary>
@@ -41,8 +36,7 @@ namespace Dories.Componentization.Runtime
         /// <exception cref="Exception"></exception>
         public void AddComponent(Component component)
         {
-            InternalCheck();
-            m_Entity.AddComponent(component);
+            Entity.AddComponent(component);
         }
         
         /// <summary>
@@ -53,8 +47,7 @@ namespace Dories.Componentization.Runtime
         /// <exception cref="Exception"></exception>
         public void RemoveComponent(Component component, bool isRelease = true)
         {
-            InternalCheck();
-            m_Entity.RemoveComponent(component, isRelease);
+            Entity.RemoveComponent(component, isRelease);
         }
 
         /// <summary>
@@ -64,8 +57,7 @@ namespace Dories.Componentization.Runtime
         /// <returns></returns>
         public Component GetComponentCSharp(Type componentType)
         {
-            InternalCheck();
-            return m_Entity.GetComponent(componentType);
+            return Entity.GetComponent(componentType);
         }
 
         /// <summary>
@@ -76,8 +68,7 @@ namespace Dories.Componentization.Runtime
         /// <returns></returns>
         public Component GetComponent(Type componentType, int index)
         {
-            InternalCheck();
-            return m_Entity.GetComponent(componentType, index);
+            return Entity.GetComponent(componentType, index);
         }
 
         /// <summary>
@@ -87,8 +78,7 @@ namespace Dories.Componentization.Runtime
         /// <returns></returns>
         public T GetComponentCSharp<T>() where T : Component
         {
-            InternalCheck();
-            return m_Entity.GetComponent<T>();
+            return Entity.GetComponent<T>();
         }
 
         /// <summary>
@@ -99,8 +89,7 @@ namespace Dories.Componentization.Runtime
         /// <returns></returns>
         public T GetComponent<T>(int index) where T : Component
         {
-            InternalCheck();
-            return m_Entity.GetComponent<T>(index);
+            return Entity.GetComponent<T>(index);
         }
 
         public void Dispose()
