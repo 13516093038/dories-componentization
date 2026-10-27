@@ -1,4 +1,5 @@
 using System;
+using Dories.Logging;
 using System.Collections.Concurrent;
 using UnityEngine;
 
@@ -26,7 +27,7 @@ namespace Dories.Componentization.Runtime.Utils
         {
             if (m_SingletonComponents.ContainsKey(type))
             {
-                Debug.LogWarning($"Component {type} is a singleton, returning the singleton instance");
+                Log.Warn("Component", $"Component {type} is a singleton, returning the singleton instance");
                 return GetSingletonComponent(type);
             }
             var pool = InternalGetPool(type);

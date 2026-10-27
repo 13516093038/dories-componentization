@@ -1,7 +1,9 @@
 {
     "name": "Dories.Componentization.Runtime",
     "rootNamespace": "Dories.Componentization.Runtime",
-    "references": [],
+    "references": [
+        "Dories.Logging.Runtime"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

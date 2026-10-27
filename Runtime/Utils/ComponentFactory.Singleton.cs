@@ -1,4 +1,5 @@
 using System;
+using Dories.Logging;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -17,13 +18,13 @@ namespace Dories.Componentization.Runtime.Utils
         {
             if (m_SingletonComponents.ContainsKey(type))
             {
-                Debug.LogError($"Singleton component {type} already registered");
+                Log.Error("Component", $"Singleton component {type} already registered");
                 return null;
             }
 
             if (!typeof(ISingleton).IsAssignableFrom(type))
             {
-                Debug.LogError($"Singleton component {type} not registered");
+                Log.Error("Component", $"Singleton component {type} not registered");
                 return null;
             }
 
@@ -31,13 +32,13 @@ namespace Dories.Componentization.Runtime.Utils
             {
                 if (!singleton.GetType().IsAssignableFrom(type))
                 {
-                    Debug.LogError($"Singleton component {type} not registered");
+                    Log.Error("Component", $"Singleton component {type} not registered");
                     return null;
                 }
 
                 if (!m_SingletonComponents.TryAdd(type, singleton))
                 {
-                    Debug.LogError($"Singleton component {type} already registered");
+                    Log.Error("Component", $"Singleton component {type} already registered");
                 }
             }
             else
@@ -58,7 +59,7 @@ namespace Dories.Componentization.Runtime.Utils
         {
             if (!m_SingletonComponents.ContainsKey(typeof(T)))
             {
-                Debug.LogError($"Singleton component {typeof(T)} not registered");
+                Log.Error("Component", $"Singleton component {typeof(T)} not registered");
                 return;
             }
 
@@ -74,7 +75,7 @@ namespace Dories.Componentization.Runtime.Utils
         {
             if (!typeof(ISingleton).IsAssignableFrom(type))
             {
-                Debug.LogError($"Singleton component {type} not registered");
+                Log.Error("Component", $"Singleton component {type} not registered");
                 return false;
             }
 
@@ -86,7 +87,7 @@ namespace Dories.Componentization.Runtime.Utils
         {
             if (!m_SingletonComponents.TryGetValue(typeof(T), out var singleton))
             {
-                Debug.LogError($"Singleton component {typeof(T)} not registered");
+                Log.Error("Component", $"Singleton component {typeof(T)} not registered");
                 return default(T);
             }
 
@@ -97,13 +98,13 @@ namespace Dories.Componentization.Runtime.Utils
         {
             if (!typeof(ISingleton).IsAssignableFrom(type))
             {
-                Debug.LogError($"Singleton component {type} not registered");
+                Log.Error("Component", $"Singleton component {type} not registered");
                 return null;
             }
 
             if (!m_SingletonComponents.TryGetValue(type, out var singleton))
             {
-                Debug.LogError($"Singleton component {type} not registered");
+                Log.Error("Component", $"Singleton component {type} not registered");
                 return null;
             }
 
